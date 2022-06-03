@@ -49,7 +49,7 @@ const TransactionDetail = ({type, title, timestamp, amount, id}) => {
               fontFamily: 'OpenSans-Regular',
               fontSize: 12,
             }}>
-            {timestamp}
+            {new Date(timestamp).toLocaleString()}
           </Text>
         </View>
         <View style={{justifyContent: 'center'}}>
@@ -58,7 +58,7 @@ const TransactionDetail = ({type, title, timestamp, amount, id}) => {
               fontFamily: 'OpenSans-Bold',
               color: type !== 'CASH_IN' ? 'red' : 'green',
             }}>
-            {type !== 'CASH_IN' ? `-${amount}` : `+${amount}`}
+            {type !== 'CASH_IN' ? `- Rp.${amount}` : `+Rp.${amount}`}
           </Text>
         </View>
       </View>

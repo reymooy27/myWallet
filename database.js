@@ -12,14 +12,14 @@ export const getDBConnection = async () => {
 
 export const createTable = async db => {
   // create table if not exists
-  const query = 'CREATE TABLE IF NOT EXISTS data (trxid INTEGER PRIMARY KEY AUTOINCREMENT, amount INTEGER, title TEXT NOT NULL, type TEXT NOT NULL, timestamp TEXT NOT NULL);';
+  const query = 'CREATE TABLE IF NOT EXISTS data (trxid INTEGER PRIMARY KEY AUTOINCREMENT, amount INTEGER, title TEXT NOT NULL, type TEXT NOT NULL, timestamp INTEGER);';
   await db.executeSql(query);
 };
 
 export const getTransactions = async (db) => {
   try {
     const transactions = [];
-    const results = await db.executeSql('SELECT * FROM data');
+    const results = await db.executeSql('SELECT * FROM data ORDER BY timestamp DESC');
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         transactions.push(result.rows.item(index));
@@ -87,3 +87,10 @@ export const updateInitialMoney = async (db, amount) =>{
   }
 
 };
+
+const dumpTable = async ()=>{
+  const db = await getDBConnection()
+  await db.executeSql('DROP TABLE data')
+}
+
+// dumpTable()

@@ -27,7 +27,7 @@ const AddTransactionScreen = ({navigation, route}) => {
     amount: '',
     title: '',
     type: type,
-    timestamp: new Date().toLocaleString(),
+    timestamp: Date.now(),
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
