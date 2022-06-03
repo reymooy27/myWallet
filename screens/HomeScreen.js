@@ -4,26 +4,21 @@ import React, {useLayoutEffect} from 'react';
 import {View, TouchableOpacity, Text,FlatList} from 'react-native';
 import TransactionDetail from '../components/TransactionDetail';
 import { useAppContext } from '../context';
-import {dropTable, getDBConnection } from '../database';
 import colors from '../lib/colors';
 
 const Homescreen = ({navigation}) => {
 
-  const {transaction, initialMoney} = useAppContext();
+  const {transaction, balance} = useAppContext();
 
-  const renderItem = ({item}) => <TransactionDetail id={item.trxid}
-                                                    title={item.title}
-                                                    type={item.type}
-                                                    amount={item.amount}
-                                                    timestamp={item?.timestamp}
-                                                    />;
-
-
-// delete soon
-  const drop = async ()=>{
-    const db = await getDBConnection();
-    await dropTable(db);
-  };
+  const renderItem = ({item}) => (
+    <TransactionDetail 
+      id={item.trxid}
+      title={item.title}
+      type={item.type}
+      amount={item.amount}
+      timestamp={item?.timestamp}
+      />
+  )
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,14 +27,14 @@ const Homescreen = ({navigation}) => {
       headerStyle:{
         backgroundColor: colors.background,
       },
-      headerRight: ()=> (
-        <TouchableOpacity>
-          <Text>AAAA</Text>
-        </TouchableOpacity>
-      ),
+      // headerRight: ()=> (
+      //   <TouchableOpacity>
+      //     <Text>AAAA</Text>
+      //   </TouchableOpacity>
+      // ),
       headerLeft: ()=> (
-        <TouchableOpacity onPress={drop}>
-          <Text>DROP TABLE</Text>
+        <TouchableOpacity onPress={()=> navigation.navigate('SetInitialBalanceScreen')}>
+          <Text>Set Balance</Text>
         </TouchableOpacity>
       ),
     });
@@ -75,17 +70,14 @@ const Homescreen = ({navigation}) => {
           <Text
             style={{
               color: colors.primary,
-              fontSize: 28,
+              fontSize: 22,
               fontFamily: 'Sequel100Black',
             }}>
-            {initialMoney}
+            {`Rp. ${balance}`}
           </Text>
         </View>
       </View>
 
-      <View>
-        <Text>PLUS</Text>
-      </View>
 
       {/* Transaction History */}
       <View style={{marginTop: 10, marginHorizontal: 20, flex: 1}}>

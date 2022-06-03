@@ -9,7 +9,7 @@ import colors from '../lib/colors';
 
 const AddTransactionScreen = ({navigation, route}) => {
 
-  const {transaction, setTransaction, _updateInitialMoney,update, setUpdate} = useAppContext();
+  const {transaction, setTransaction, _updateBalance, setUpdate} = useAppContext();
 
   const {type} = route?.params;
 
@@ -42,7 +42,7 @@ const AddTransactionScreen = ({navigation, route}) => {
           type: initialState.type,
           timestamp: initialState.timestamp,
         });
-        _updateInitialMoney(initialState.amount,initialState.type);
+        _updateBalance(initialState.amount,initialState.type);
         setUpdate(true);
       navigation.navigate('HomeScreen');
     }

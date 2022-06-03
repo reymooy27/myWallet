@@ -2,7 +2,6 @@
 import {
   enablePromise,
   openDatabase,
-  SQLiteDatabase,
 } from 'react-native-sqlite-storage';
 
 enablePromise(true);
@@ -51,20 +50,13 @@ export const deleteTransaction = async (db,rowid)=>{
   }
 };
 
-// delete soon
-export const dropTable = async (db)=>{
-  try {
-    await db.executeSql('DROP TABLE initial_money');
-  } catch (error) {
-    console.log(error);
-
-  }
-};
-
 export const createTableInitialMoney = async db => {
 try {
   const query = 'CREATE TABLE IF NOT EXISTS initial_money (amount INTEGER);';
-  await db.executeSql(query);
+  const executeQuery = await db.executeSql(query);
+  if(executeQuery){
+    await db.executeSql('INSERT INTO initial_money (amount) values (0)')
+  }
 } catch (error) {
   console.log(error);
 }

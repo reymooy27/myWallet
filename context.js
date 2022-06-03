@@ -6,7 +6,7 @@ const AppContext = createContext();
 
 const ContextWraper = ({children}) => {
   const [transaction, setTransaction] = useState([]);
-  const [initialMoney, setInitialMoney] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   const [update, setUpdate] = useState(false);
 
@@ -17,7 +17,7 @@ const ContextWraper = ({children}) => {
       await createTableInitialMoney(db)
       const savedTransaction = await getTransactions(db)
       const im = await getInitialMoney(db)
-      setInitialMoney(im[0]?.amount)
+      setBalance(im[0]?.amount)
       setTransaction(savedTransaction)
     } catch (error) {
       console.error(error);
@@ -30,15 +30,15 @@ const ContextWraper = ({children}) => {
     return ()=> setUpdate(false)
   }, [loadDataCallback, update]);
 
-  const _updateInitialMoney = async (amount,type) => {
+  const _updateBalance = async (amount,type) => {
     const db = await getDBConnection();
     if (type === 'CASH_IN'){
-      setInitialMoney(prev => prev + parseInt(amount,10));
-      let res = initialMoney + parseInt(amount,10)
+      setBalance(prev => prev + parseInt(amount,10));
+      let res = balance + parseInt(amount,10)
       await updateInitialMoney(db, res);
     }else {
-      setInitialMoney(prev => prev - parseInt(amount,10));
-      let res = initialMoney - parseInt(amount,10)
+      setBalance(prev => prev - parseInt(amount,10));
+      let res = balance - parseInt(amount,10)
       await updateInitialMoney(db, res);
     }
   };
@@ -46,7 +46,7 @@ const ContextWraper = ({children}) => {
 
   return (
     <AppContext.Provider
-      value={{transaction, setTransaction, initialMoney, setInitialMoney, _updateInitialMoney,update, setUpdate}}>
+      value={{transaction, setTransaction, balance, setBalance, _updateBalance,update, setUpdate}}>
       {children}
     </AppContext.Provider>
   );
